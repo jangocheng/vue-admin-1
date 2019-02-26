@@ -151,7 +151,7 @@ export default {
         top_button_modal(key) {
             this.list_data.top_button_list[key].page_data.api_blank = this.list_data.top_button_list[key].page_data.api
             this.list_data.top_button_list[key].page_data.show = true
-            this.$refs['top_modal_' + key][0].loadData(_this.list_data.top_button_list[key].page_data.api_blank)
+            this.$refs['top_modal_' + key][0].loadData(this.list_data.top_button_list[key].page_data.api_blank)
         },
         right_button_modal(key, scope) {
             let _this = this

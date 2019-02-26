@@ -20,10 +20,10 @@
             <Form @submit.native.prevent :ref="ref" :model="data.form_values" :label-position="label_position" :label-width="label_width" :rules="data.form_rules">
                 <template v-for="(item,key,index) in data.form_items">
                     <template v-if="data.form_rules[item.name] != ''">
-                        <VaDyformItem :key="index" :item="item" :form_values="data.form_values" :prop="item.name"></VaDyformItem>
+                        <VaDyformItem :ref="'dyformitem_' + item.name" :key="index" :item="item" :form_values="data.form_values" :prop="item.name"></VaDyformItem>
                     </template>
                     <template v-else-if="data.form_rules[item.name] == ''">
-                        <VaDyformItem :key="index" :item="item" :form_values="data.form_values"></VaDyformItem>
+                        <VaDyformItem :ref="'dyformitem_' + item.name" :key="index" :item="item" :form_values="data.form_values"></VaDyformItem>
                     </template>
                 </template>
                 
@@ -114,7 +114,8 @@ export default {
         // 获取checkboxtree的选中项目
         for(let index in _this.data.form_items) {
             if (_this.data.form_items[index].type == 'checkboxtree') {
-                let admin_auth = _this.$refs[_this.data.form_items[index].name][0].getCheckedProp('admin_auth')
+                //console.log(_this.$refs['dyformitem_' + _this.data.form_items[index].name]);
+                let admin_auth = _this.$refs['dyformitem_' + _this.data.form_items[index].name][0].getChecked('admin_auth')
                 _this.data.form_values[_this.data.form_items[index].name] = admin_auth
             }
         };

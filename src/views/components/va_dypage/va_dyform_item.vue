@@ -112,7 +112,7 @@
         <template v-else-if="item.type == 'checkboxtree'">
             <!-- https://github.com/lison16/tree-table-vue -->
             <tree-table
-                :ref="item.name"
+                :ref="'checkboxtree_' + item.name"
                 :expand-key="item.extra.expand-key"
                 :is-fold="true"
                 :border="true"
@@ -163,6 +163,9 @@ export default {
         formlist_addrow (name) {
             this.form_values[name].push(new Object());
         },
+        getChecked (name) {
+            return this.$refs['checkboxtree_' + this.item.name].getCheckedProp(name)
+        }
     },
     watch: {
     }
