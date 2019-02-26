@@ -16,7 +16,7 @@ const resolve = dir => {
 }
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/', // 路径
+  publicPath: process.env.NODE_ENV === 'production' ? './' : './', // 路径
   outputDir: 'dist', // 输出文件目录
   lintOnSave: false,
   chainWebpack: config => {
