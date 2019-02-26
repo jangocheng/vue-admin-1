@@ -19,8 +19,8 @@
     <Card shadow>
         <template v-if="this.data_list.length > 0">
             <template v-for="(item,key) in list_data.top_button_list">
-                <Modal :key="'modal' + key" v-model="item.page_data.show" scrollable footer-hide :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
-                    <VaDyform :api="item.page_data.api_blank"></VaDyform>
+                <Modal :key="'top_modal_' + key" v-model="item.page_data.show" scrollable footer-hide :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
+                    <VaDyform :ref="'top_modal_' + key" :api="item.page_data.api_blank"></VaDyform>
                 </Modal>
             </template>
             <Button
@@ -61,13 +61,13 @@
             </tree-table>
             <template v-for="(item,key) in list_data.right_button_list">
                 <template v-if="item.page_data.modal_type == 'form'">
-                    <Modal :key="'form' + key" v-model="item.page_data.show" scrollable footer-hide :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
-                        <VaDyform :api="item.page_data.api_blank"></VaDyform>
+                    <Modal :key="'modal' + key" v-model="item.page_data.show" scrollable footer-hide :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
+                        <VaDyform :ref="'right_modal_' + key" :api="item.page_data.api_blank"></VaDyform>
                     </Modal>
                 </template>
                 <template v-else-if="item.page_data.modal_type == 'list'">
-                    <Modal :key="'list' + key" v-model="item.page_data.show" scrollable footer-hide :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
-                        <DynamicList :api="item.page_data.api_blank"></DynamicList>
+                    <Modal :key="'modal' + key" v-model="item.page_data.show" scrollable footer-hide :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
+                        <DynamicList :ref="'right_modal_' + key" :api="item.page_data.api_blank"></DynamicList>
                     </Modal>
                 </template>
             </template>
@@ -126,7 +126,10 @@ export default {
     destroyed () {
     },
     methods: {
-        loadData(){
+        loadData(api = ''){
+            if (api != '') {
+                this.api = api
+            }
             if (this.api) {
                 let _this = this
                 axios.get(this.api)
@@ -148,6 +151,7 @@ export default {
         top_button_modal(key) {
             this.list_data.top_button_list[key].page_data.api_blank = this.list_data.top_button_list[key].page_data.api
             this.list_data.top_button_list[key].page_data.show = true
+            this.$refs['top_modal_' + key][0].loadData(_this.list_data.top_button_list[key].page_data.api_blank)
         },
         right_button_modal(key, scope) {
             let _this = this
@@ -195,11 +199,14 @@ export default {
                         _this.list_data.right_button_list[key].page_data.api_blank
                             = _this.list_data.right_button_list[key].page_data.api + api_suffix
                         _this.list_data.right_button_list[key].page_data.show = true
+                        console.log(_this.$refs['right_modal_' + key])
+                        _this.$refs['right_modal_' + key][0].loadData(_this.list_data.right_button_list[key].page_data.api_blank)
                         break;
                     default:
                         _this.list_data.right_button_list[key].page_data.api_blank 
                             = _this.list_data.right_button_list[key].page_data.api + api_suffix
                         _this.list_data.right_button_list[key].page_data.show = true
+                        _this.$refs['right_modal_' + key][0].loadData(_this.list_data.right_button_list[key].page_data.api_blank)
                         break;
                 }
             }

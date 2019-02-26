@@ -85,6 +85,30 @@ export default {
   computed: {
   },
   methods: {
+      loadData(api = ''){
+        if (api != '') {
+            this.api = api
+        }
+        if (this.api) {
+            let _this = this
+            axios.get(this.api)
+                .then(function (res) {
+                    res = res.data
+                    if(res.code=='200'){
+                        if (res.data.form_data.form_rules.length == 0) {
+                            res.data.form_data.form_rules = new  Object();
+                        }
+                        //console.log(res.data.form_data);
+                        _this.data = res.data.form_data
+                    }else{
+                        _this.$Message.error(res.msg)
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }
+      },
       handleSubmit (name) {
         let _this = this
         // 获取checkboxtree的选中项目
@@ -152,28 +176,6 @@ export default {
         // this.data = '';
         this.$refs[name].resetFields()
         this.$Modal.remove()
-    },
-    loadData () {
-        // 获取表单构造数据
-        if (this.api) {
-            let _this = this
-            axios.get(this.api)
-                .then(function (res) {
-                    res = res.data
-                    if(res.code=='200'){
-                        if (res.data.form_data.form_rules.length == 0) {
-                            res.data.form_data.form_rules = new  Object();
-                        }
-                        //console.log(res.data.form_data);
-                        _this.data = res.data.form_data
-                    }else{
-                        _this.$Message.error(res.msg)
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
-        }
     }
   },
   watch: {
