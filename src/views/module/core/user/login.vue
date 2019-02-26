@@ -11,24 +11,27 @@
 </style>
 <template>
     <div class="content">
-        <Row type="flex" justify="center" align="middle" style="margin-top: 15%">
-            <Col span="4">
-                <div style="height: 80px;width: 100%;color: #fff;">
+        <Row type="flex" justify="center" align="middle" style="margin-top: 10%">
+            <Col :xs="20" :sm="10" :md="6" :lg="5">
+                <div style="width: 100%;color: #fff;margin-bottom: 30px;">
+                    <img style="width: 120px;margin-bottom: 10px;" src="@/assets/logo.png" alt="initadmin">
                     <h2>InitAdmin后台管理系统</h2>
                 </div>
                 <Form ref="formLogin" :model="formLogin" :rules="ruleLogin">
                     <FormItem prop="account">
-                        <Input type="text" v-model="formLogin.account" placeholder="账号">
+                        <Input size="large" type="text" v-model="formLogin.account" placeholder="账号">
                             <Icon type="ios-person-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>
                     <FormItem prop="password">
-                        <Input type="password" v-model="formLogin.password" placeholder="密码">
+                        <Input size="large" type="password" v-model="formLogin.password" placeholder="密码">
                             <Icon type="ios-lock-outline" slot="prepend"></Icon>
                         </Input>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" @click="handleSubmit('formLogin')">登录</Button>
+                        <Button size="large" long :loading="loading" type="primary" @click="handleSubmit('formLogin')">
+                            登录
+                        </Button>
                     </FormItem>
                 </Form>
             </Col>
@@ -40,6 +43,8 @@ import util from '@/libs/util'
 export default {
     data() {
         return {
+            isDemo: false,
+            loading: false,
             formLogin: {
                 account: '',
                 password: ''
@@ -55,8 +60,15 @@ export default {
             }
         }
     },
+    created() {
+        if (this.isDemo == true) {
+            this.formLogin.account = 'initadmin'
+            this.formLogin.password = 'initadmin.net'
+        }
+    },
     methods: {
         handleSubmit () {
+            this.loading = true
             let _this = this
             axios.post('/v1/core/user/login', {
                     identity_type: 0,
@@ -65,8 +77,8 @@ export default {
                 })
                 .then(function (res) {
                     res = res.data
-                    //console.log(res)
-                    if(res.code=='200'){
+                    console.log(res)
+                    if (res.code == '200') {
                         _this.$store.commit('set_token', res.data.token)
                         if (util.getToken()) {
                             _this.$Message.success(res.msg)
@@ -74,12 +86,13 @@ export default {
                         } else {
                             _this.$Message.error('本地token存储失败')
                         }
-                    }else{
+                    } else {
                         _this.$Message.error(res.msg)
                     }
+                    _this.loading = false
                 })
                 .catch(function (error) {
-                    //console.log(error)
+                    _this.loading = false
                 });
         }
     }

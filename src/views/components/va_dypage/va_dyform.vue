@@ -165,7 +165,7 @@ export default {
                         } else {
                             _this.$Message.error(res.msg)
                         }
-                        t_thishis.loading = false
+                        _this.loading = false
                     })
                     .catch(function (error) {
                         console.log(error)
