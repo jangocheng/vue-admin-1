@@ -2,6 +2,7 @@
   <div>
     <Card shadow>
         <VaDyform :api="api"></VaDyform>
+        <div style="text-align: right;font-size: 12px;color: #808695;transform: scale(0.8)">via iadypage</div>
     </Card>
   </div>
 </template>

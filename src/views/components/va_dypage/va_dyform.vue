@@ -30,7 +30,7 @@
                 <!-- 按钮 -->
                 <Divider />
                 <FormItem style="text-align:left">
-                    <Button type="primary" size="large" style="margin-right: 15px" @click="handleSubmit(ref)">确认提交</Button>
+                    <Button :loading="loading" type="primary" size="large" style="margin-right: 15px" @click="handleSubmit(ref)">确认提交</Button>
                     <Button type="text" size="large" @click="handleReset(ref)">取消操作</Button>
                 </FormItem>
             </Form>
@@ -60,6 +60,7 @@ export default {
   },
   data () {
     return {
+        loading: false,
         ref: 'form', //相当于子组件实例ID
         data: '',
         label_position: 'right',
@@ -110,6 +111,7 @@ export default {
         }
       },
       handleSubmit (name) {
+        this.loading = true
         let _this = this
         // 获取checkboxtree的选中项目
         for(let index in _this.data.form_items) {
@@ -140,35 +142,40 @@ export default {
                 axios.post(this.api, this.data.form_values)
                     .then(function (res) {
                         res = res.data
-                        if(res.code == '200'){
+                        if (res.code == '200') {
                             _this.$Message.success(res.msg)
                             _this.$Modal.remove()
-                        }else{
+                        } else {
                             _this.$Message.error(res.msg)
                         }
+                        _this.loading = false
                     })
                     .catch(function (error) {
                         console.log(error)
+                        _this.loading = false
                     });
                 break;
             case 'put':
                 axios.put(this.api, this.data.form_values)
                     .then(function (res) {
                         res = res.data
-                        if(res.code == '200'){
+                        if (res.code == '200') {
                             _this.$Message.success(res.msg)
                             _this.$Modal.remove()
-                        }else{
+                        } else {
                             _this.$Message.error(res.msg)
                         }
+                        t_thishis.loading = false
                     })
                     .catch(function (error) {
                         console.log(error)
+                        _this.loading = false
                     });
                 break;
         
             default:
                 _this.$Message.error('form_method不存在')
+                _this.loading = false
                 break;
         } 
     },
