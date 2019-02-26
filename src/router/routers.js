@@ -27,21 +27,13 @@ var routers = [
       component: Layout,
       children: [
         {
-          path: '/home',
+          path: '/home/',
           name: 'home',
           meta: {
             title: '首页'
           },
           component: () => import('@/views/index.vue')
-        },
-        {
-            path: '/va_dylist/:api',
-            name: 'va_dylist',
-            meta: {
-              title: '动态页面'
-            },
-            component: () => import('@/views/components/va_dypage/va_dylist_route.vue')
-          }
+        }
       ]
     }
 ];
