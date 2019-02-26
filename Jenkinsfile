@@ -30,6 +30,7 @@ pipeline {
                 // 请在这里放置您项目代码的单元测试调用过程，例如:
                 // sh 'mvn package' // mvn 示例
                 // sh 'make' // make 示例
+                npm install
                 npm run build
                 echo "构建完成."
                 // archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true // 收集构建产物
