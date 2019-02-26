@@ -36,47 +36,52 @@
     </div>
 </template>
 <script>
-    export default {
-        data() {
-            return {
-                formLogin: {
-                    account: '',
-                    password: ''
-                },
-                ruleLogin: {
-                    account: [
-                        { required: true, message: '请填写账号', trigger: 'blur' }
-                    ],
-                    password: [
-                        { required: true, message: '请填写密码', trigger: 'blur' },
-                        { type: 'string', min: 6, message: '密码至少6位', trigger: 'blur' }
-                    ]
-                }
-            }
-        },
-        methods: {
-            handleSubmit () {
-                let _this = this
-                axios.post('/v1/core/user/login', {
-                        identity_type: 0,
-                        identifier: _this.formLogin.account,
-                        credential: _this.formLogin.password
-                    })
-                    .then(function (res) {
-                        res = res.data
-                        console.log(res)
-                        if(res.code=='200'){
-                            _this.$store.commit('set_token',res.data.token)
-                            _this.$Message.success(res.msg)
-                            _this.$router.push('/')
-                        }else{
-                            _this.$Message.error(res.msg)
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error)
-                    });
+import util from '@/libs/util'
+export default {
+    data() {
+        return {
+            formLogin: {
+                account: '',
+                password: ''
+            },
+            ruleLogin: {
+                account: [
+                    { required: true, message: '请填写账号', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请填写密码', trigger: 'blur' },
+                    { type: 'string', min: 6, message: '密码至少6位', trigger: 'blur' }
+                ]
             }
         }
+    },
+    methods: {
+        handleSubmit () {
+            let _this = this
+            axios.post('/v1/core/user/login', {
+                    identity_type: 0,
+                    identifier: _this.formLogin.account,
+                    credential: _this.formLogin.password
+                })
+                .then(function (res) {
+                    res = res.data
+                    //console.log(res)
+                    if(res.code=='200'){
+                        _this.$store.commit('set_token', res.data.token)
+                        if (util.getToken()) {
+                            _this.$Message.success(res.msg)
+                            _this.$router.push('/')
+                        } else {
+                            _this.$Message.error('本地token存储失败')
+                        }
+                    }else{
+                        _this.$Message.error(res.msg)
+                    }
+                })
+                .catch(function (error) {
+                    //console.log(error)
+                });
+        }
     }
+}
 </script>
