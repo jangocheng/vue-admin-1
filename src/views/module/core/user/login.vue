@@ -14,7 +14,7 @@
         <Row type="flex" justify="center" align="middle" style="margin-top: 15%">
             <Col span="4">
                 <div style="height: 80px;width: 100%;color: #fff;">
-                    <h2>vue-admin后台管理系统</h2>
+                    <h2>InitAdmin后台管理系统</h2>
                 </div>
                 <Form ref="formLogin" :model="formLogin" :rules="ruleLogin">
                     <FormItem prop="account">
