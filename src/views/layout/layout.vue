@@ -182,7 +182,7 @@
                         <div :key="'dp_' + item1.path" v-for="(item1, key1) in this.get_menu_list.menu_tree">
                             <Dropdown transfer placement="right-start" trigger="hover" v-if="item1.menu_type == 0" :key="item1.path">
                                 <a style="display: block;width: 62px;height: 35px;" href="javascript:void(0)">
-                                    <Icon style="font-size: 20px;color: #fff;font-weight: 400;" type="md-menu"></Icon>
+                                    <Icon style="font-size: 20px;color: #fff;font-weight: 400;" :type="item1.icon"></Icon>
                                 </a>
                                 <DropdownMenu slot="list" v-if="item1.children">
                                     <template v-for="(item2, key2) in item1.children">
@@ -203,7 +203,7 @@
                     <template v-for="(item1, key1) in this.get_menu_list.menu_tree">
                         <Submenu v-if="item1.menu_type == 0" :name="key1" :key="item1.path">
                             <template slot="title">
-                                <Icon type="ios-filing" />
+                                <Icon :type="item1.icon" />
                                 {{item1.title}}
                             </template>
                             <template v-if="item1.children">
