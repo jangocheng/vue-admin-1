@@ -1,13 +1,36 @@
 <style scoped lang="less">
     @import '../../plugins/iview-variables.less';
-    .layout{
+    .layout {
         border: 0px solid #d7dde4;
         background: #f5f7f9;
         position: relative;
         border-radius: 0px;
         overflow: hidden;
-        .logo-box{
-            background: #363e4f;
+        .ivu-layout-sider {
+            overflow-x: hidden !important;
+            background: #002538;
+        }
+        .ivu-select-dropdown {
+            left: 65px !important;
+        }
+        .ivu-menu-dark.ivu-menu-vertical {
+            text-align: left;
+            background: #002538;
+            .ivu-menu-submenu-title {
+                padding: 14px 15px;
+                &:hover {
+                    background: #002538;
+                }
+            }
+            .ivu-menu-opened {
+                background: #17242B;
+                .ivu-menu-submenu-title {
+                    background: #002538;
+                }
+            }
+        }
+        .logo-box {
+            background: #002538;
             display: flex;
             justify-content: left;
             align-items: center;
@@ -22,16 +45,16 @@
                 font-size: 16px;
             }
         }
-        .layout-header-bar{
+        .layout-header-bar {
             display: flex;
             justify-content: space-between;
             background: #fff;
             box-shadow: 0 1px 1px rgba(0,0,0,.1);
             padding-right: 20px;
-            .menu-icon{
+            .menu-icon {
                 transition: all .3s;
             }
-            .rotate-icon{
+            .rotate-icon {
                 transform: rotate(-90deg);
             }
             .right {
@@ -39,7 +62,7 @@
                 align-items: center;
             }
         }
-        .menu-item span{
+        .menu-item span {
             display: inline-block;
             overflow: hidden;
             width: 69px;
@@ -48,17 +71,17 @@
             vertical-align: bottom;
             transition: width .2s ease .2s;
         }
-        .menu-item i{
+        .menu-item i {
             transform: translateX(0px);
             transition: font-size .2s ease, transform .2s ease;
             vertical-align: middle;
             font-size: 16px;
         }
-        .collapsed-menu span{
+        .collapsed-menu span {
             width: 0px;
             transition: width .2s ease;
         }
-        .collapsed-menu i{
+        .collapsed-menu i {
             transform: translateX(5px);
             transition: font-size .2s ease .2s, transform .2s ease .2s;
             vertical-align: middle;
@@ -147,25 +170,47 @@
 <template>
     <div class="layout">
         <Layout :style="{height: '100vh'}">
-            <Sider :style="{overflow: 'hidden', overflow: 'auto'}" breakpoint="md" ref="side1" hide-trigger reakpoint="md" collapsible :collapsed-width="78" v-model="isCollapsed">
-                <div >
+            <Sider :style="{overflow: 'hidden', overflow: 'auto', textAlign: 'center'}" breakpoint="md" ref="side1" hide-trigger reakpoint="md" collapsible :collapsed-width="62" v-model="isCollapsed">
+                <div>
                     <router-link class="logo-box" to="/home">
                         <img class="logo" src="@/assets/logo.png" alt="InitAdmin">
-                        <div class="title">InitAdmin</div>
+                        <div class="title" v-if="isCollapsed == false">InitAdmin</div>
                     </router-link>
                 </div>
-                <Menu :open-names="[0]" active-name="activeLeft" mode="vertical" theme="dark" width="auto" class="left-menu" :class="menuitemClasses">
-                    <template v-for="(item1,key1) in this.get_menu_list.menu_tree">
+                <template v-if="isCollapsed">
+                    <div style="margin-top: 15px;">
+                        <div :key="'dp_' + item1.path" v-for="(item1, key1) in this.get_menu_list.menu_tree">
+                            <Dropdown transfer placement="right-start" trigger="hover" v-if="item1.menu_type == 0" :key="item1.path">
+                                <a style="display: block;width: 62px;height: 35px;" href="javascript:void(0)">
+                                    <Icon style="font-size: 20px;color: #fff;font-weight: 400;" type="md-menu"></Icon>
+                                </a>
+                                <DropdownMenu slot="list" v-if="item1.children">
+                                    <template v-for="(item2, key2) in item1.children">
+                                        <Dropdown transfer placement="right-start" trigger="hover" v-if="item2.menu_type == '0'" :key="item2.path">
+                                        </Dropdown>
+                                        <template v-else>
+                                            <DropdownItem v-if="item2.menu_type == 1" @click.native="routeTag(item2.path + item2.api_params)" :key="item2.path">
+                                                <span style="font-size: 13px;">{{item2.title}}</span>
+                                            </DropdownItem>
+                                        </template>
+                                    </template>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
+                    </div>
+                </template>
+                <Menu v-else :open-names="[0]" active-name="activeLeft" mode="vertical" theme="dark" width="auto" class="left-menu" :class="menuitemClasses">
+                    <template v-for="(item1, key1) in this.get_menu_list.menu_tree">
                         <Submenu v-if="item1.menu_type == 0" :name="key1" :key="item1.path">
                             <template slot="title">
                                 <Icon type="ios-filing" />
                                 {{item1.title}}
                             </template>
                             <template v-if="item1.children">
-                                <template v-for="(item2,key2) in item1.children">
+                                <template v-for="(item2, key2) in item1.children">
                                     <Submenu v-if="item2.menu_type == '0'" :key="item2.path" :name="key1 + '-' + key2">
                                         <template slot="title">{{item2.title}}</template>
-                                        <template v-for="(item3,key3) in item2.children" >
+                                        <template v-for="(item3, key3) in item2.children" >
                                             <MenuItem v-if="item3.menu_type == 1" :key="item3.path" :to="item3.path + item3.api_params" :name="key1 + '-' + key2 + '-' + key3">{{item3.title}}</MenuItem>
                                         </template>
                                     </Submenu>
@@ -308,7 +353,7 @@
                             meta: {
                                 title: '首页'
                             },
-                            component: () => import('@/views/index.vue')
+                            component: () => import('@/views/home.vue')
                         }
                     ]
                 }
@@ -401,6 +446,9 @@
             },
         },
         methods: {
+            routeTag (path) {
+                this.$router.push(path)
+            },
             //缩放左侧导航
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();

@@ -32,7 +32,7 @@ var routers = [
           meta: {
             title: '首页'
           },
-          component: () => import('@/views/index.vue')
+          component: () => import('@/views/home.vue')
         }
       ]
     }

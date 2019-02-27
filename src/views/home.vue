@@ -18,17 +18,24 @@
 </style>
 <template>
     <div class="index">
-        <Row type="flex" justify="left" align="top">
+        <Row type="flex" justify="start" align="top">
             <Col :xs="24" :sm="12">
                 <Card class="index-card" :bordered="false" style="">
                     <p slot="title">系统信息</p>
                     <div>
                         <div>后台名称：InitAdmin后台</div>
-                        <div>官网：https://initadmin.net</div>
+                        <div>官方网站：https://initadmin.net</div>
+                        <div>开发文档：https://initadmin.net</div>
                         <div>客户端框架：vue-admin v0.1.0</div>
                         <div>服务端框架：actionphp v0.1.0</div>
+                        <div>
+                            <span>Github：</span>
+                            <a target="_blank" href="https://github.com/initadmin">https://github.com/initadmin</a>
+                        </div>
+                        <Divider/>
                         <div>PHP版本：7.0</div>
                         <div>数据库版本：Mysql5.7</div>
+                        <div>文件上传限制：100M</div>
                     </div>
                 </Card>
             </Col>
