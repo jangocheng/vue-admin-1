@@ -24,8 +24,8 @@
                     <p slot="title">系统信息</p>
                     <div>
                         <div>后台名称：InitAdmin后台</div>
-                        <div>官方网站：https://initadmin.net</div>
-                        <div>开发文档：https://initadmin.net</div>
+                        <div>官方网站：<a target="_blank" href="https://initadmin.net">https://initadmin.net</a></div>
+                        <div>开发文档：<a target="_blank" href="https://initadmin.net/#/docs">https://initadmin.net/#/docs</a></div>
                         <div>客户端框架：vue-admin v0.1.0</div>
                         <div>服务端框架：actionphp v0.1.0</div>
                         <div>
