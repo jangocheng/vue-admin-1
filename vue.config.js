@@ -49,5 +49,12 @@ module.exports = {
       localeDir: 'locales',
       enableInSFC: false
     }
+  },
+  css: {
+    loaderOptions: {
+        less: {
+            javascriptEnabled: true,
+        }
+    }
   }
 }

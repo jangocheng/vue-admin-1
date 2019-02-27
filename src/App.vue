@@ -21,7 +21,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+@import './plugins/iview-variables.less';
 body {
   overflow: hidden;
 }
