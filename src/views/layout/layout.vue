@@ -331,7 +331,13 @@
                 tagsleft: '28'
             };
         },
-        beforeCreate: function () {
+        created: function () {
+            // 菜单缩放状态
+            let menuCollapse = localStorage.menuCollapse;
+            if (menuCollapse == 'true') {
+                 this.isCollapsed = true
+            }
+
             // 首次加载读取之前打开的标签
             this.$store.dispatch('setVisitedViews')
             let menu_data = util.getMenulistFromLocalstorage()
@@ -427,11 +433,11 @@
         },
         computed: {
             ...mapGetters([
-                'get_visitedviews', //多标签数据
-                'get_menu_list' //左侧导航
+                'get_visitedviews', // 多标签数据
+                'get_menu_list' // 左侧导航
             ]),
 
-            //缩放左侧导航
+            // 缩放左侧导航
             rotateIcon () {
                 return [
                     'menu-icon',
@@ -449,23 +455,24 @@
             routeTag (path) {
                 this.$router.push(path)
             },
-            //缩放左侧导航
+            // 缩放左侧导航
             collapsedSider () {
-                this.$refs.side1.toggleCollapse();
+                this.$refs.side1.toggleCollapse()
+                localStorage.menuCollapse = this.isCollapsed
             },
 
-            //判断多标签当前路由
+            // 判断多标签当前路由
             isActive(route){
                 return route.path == this.$route.path
             },
-            //增加新标签
+            // 增加新标签
             addViewTags(){
                 if(this.$route.name){
                     const route = this.$route
                     this.$store.dispatch('addVisitedViews',route);
                 }
             },
-            //先提交删除数据的方法,数组删除出掉数据后，如果关闭的是当前打开的路由需要将路由改为数组最后一次push进去的路由
+            // 先提交删除数据的方法,数组删除出掉数据后，如果关闭的是当前打开的路由需要将路由改为数组最后一次push进去的路由
             delSelectTag(route){
                 this.$store.dispatch('delVisitedViews',route).then((views)=>{
                     if(this.isActive(route)){//只有在关闭当前打开的标签页才会有影响
@@ -479,7 +486,7 @@
                 })
             },
 
-            //多标签滚动
+            // 多标签滚动
             handleScroll (e) {
                 let left = Number(this.tagsleft) + Number(e)
                 if (left >= 28) {
@@ -514,9 +521,9 @@
                 this.$router.push(this.$route.meta.name)
             },
 
-            //清除缓存
+            // 清除缓存
             cleanRuntime () {
-                //清楚服务器缓存
+                // 清除服务器缓存
                 let _this = this
                 axios.delete('/v1/admin/core/system/cleanRuntime')
                     .then(function (res) {
@@ -535,7 +542,7 @@
                         console.log(error);
                     });
             },
-            //注销登录
+            // 注销登录
             logout () {
                 //清楚服务器缓存
                 let _this = this
@@ -556,13 +563,13 @@
                         console.log(error);
                     });
             },
-            //todo
+            // todo
             todo () {
                 alert('开发中...')
             }
         },
         watch:{
-            //地址栏变化了就触发这个添加方法
+            // 地址栏变化了就触发这个添加方法
             $route(){
                 this.key = this.$route.name
                 this.addViewTags();
