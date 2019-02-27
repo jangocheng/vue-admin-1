@@ -43,7 +43,7 @@ import util from '@/libs/util'
 export default {
     data() {
         return {
-            isDemo: true,
+            isDemo: false,
             loading: false,
             formLogin: {
                 account: '',
