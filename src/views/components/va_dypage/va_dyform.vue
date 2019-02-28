@@ -28,11 +28,13 @@
                 </template>
                 
                 <!-- 按钮 -->
-                <Divider />
-                <FormItem style="text-align:left">
-                    <Button :loading="loading" type="primary" size="large" style="margin-right: 15px" @click="handleSubmit(ref)">确认提交</Button>
-                    <Button type="text" size="large" @click="handleReset(ref)">取消操作</Button>
-                </FormItem>
+                <div v-if="foot_hide == false">
+                    <Divider />
+                    <FormItem style="text-align:left">
+                        <Button :loading="loading" type="primary" size="large" style="margin-right: 15px" @click="submit()">确认提交</Button>
+                        <Button type="text" size="large" @click="cancel()">取消操作</Button>
+                    </FormItem>
+                </div>
             </Form>
         </template>
         <template v-else>
@@ -56,7 +58,8 @@ export default {
         VaDyformItem
     },
   props: {
-    api: ''
+    api: '',
+    foot_hide: false,
   },
   data () {
     return {
@@ -110,15 +113,15 @@ export default {
                 });
         }
       },
-      handleSubmit (name) {
+      submit () {
         this.loading = true
         let _this = this
         // 获取checkboxtree的选中项目
         for(let index in _this.data.form_items) {
             if (_this.data.form_items[index].type == 'checkboxtree') {
-                //console.log(_this.$refs['dyformitem_' + _this.data.form_items[index].name]);
-                let admin_auth = _this.$refs['dyformitem_' + _this.data.form_items[index].name][0].getChecked('admin_auth')
-                _this.data.form_values[_this.data.form_items[index].name] = admin_auth
+                //console.log(_this.$refs['dyformitem_' + _this.data.form_items[index][_this.ref]]);
+                let admin_auth = _this.$refs['dyformitem_' + _this.data.form_items[index][_this.ref]][0].getChecked('admin_auth')
+                _this.data.form_values[_this.data.form_items[index][_this.ref]] = admin_auth
             }
         };
         //console.log(_this.data.form_values)
@@ -128,7 +131,7 @@ export default {
             this.submitForm()
             return true
         }
-        this.$refs[name].validate((valid) => {
+        this.$refs[_this.ref].validate((valid) => {
             if (valid) {
                 _this.submitForm()
             } 
@@ -179,10 +182,10 @@ export default {
                 break;
         } 
     },
-    handleReset (name) {
+    cancel () {
         // this.api = '';
         // this.data = '';
-        this.$refs[name].resetFields()
+        this.$refs[this.ref].resetFields()
         this.$Modal.remove()
     }
   },
