@@ -119,21 +119,18 @@ export default {
         // 获取checkboxtree的选中项目
         for(let index in _this.data.form_items) {
             if (_this.data.form_items[index].type == 'checkboxtree') {
-                //console.log(_this.$refs['dyformitem_' + _this.data.form_items[index][_this.ref]]);
-                let admin_auth = _this.$refs['dyformitem_' + _this.data.form_items[index][_this.ref]][0].getChecked('admin_auth')
-                _this.data.form_values[_this.data.form_items[index][_this.ref]] = admin_auth
+                let admin_auth = _this.$refs['dyformitem_' + _this.data.form_items[index].name][0].getChecked('admin_auth')
+                _this.data.form_values[_this.data.form_items[index].name] = admin_auth
             }
         };
-        //console.log(_this.data.form_values)
         
         //提交数据
         if (this.data.form_rules.length == 0) {
-            this.submitForm()
-            return true
+            return this.submitForm()
         }
         this.$refs[_this.ref].validate((valid) => {
             if (valid) {
-                _this.submitForm()
+                return _this.submitForm()
             } 
         })
     },
@@ -142,21 +139,24 @@ export default {
         let _this = this
         switch (this.data.form_method) {
             case 'post':
-                axios.post(this.api, this.data.form_values)
-                    .then(function (res) {
-                        res = res.data
-                        if (res.code == '200') {
-                            _this.$Message.success(res.msg)
-                            _this.$Modal.remove()
-                        } else {
-                            _this.$Message.error(res.msg)
-                        }
-                        _this.loading = false
-                    })
-                    .catch(function (error) {
-                        console.log(error)
-                        _this.loading = false
-                    });
+                return new Promise((resolve, reject) => {
+                    axios.post(this.api, this.data.form_values)
+                        .then(function (res) {
+                            res = res.data
+                            if (res.code == '200') {
+                                _this.$Message.success(res.msg)
+                                _this.$Modal.remove()
+                            } else {
+                                _this.$Message.error(res.msg)
+                            }
+                            _this.loading = false
+                            resolve(res)
+                        })
+                        .catch(function (error) {
+                            _this.loading = false
+                            reject(error)
+                        });
+                })
                 break;
             case 'put':
                 axios.put(this.api, this.data.form_values)
@@ -165,6 +165,7 @@ export default {
                         if (res.code == '200') {
                             _this.$Message.success(res.msg)
                             _this.$Modal.remove()
+                            return true
                         } else {
                             _this.$Message.error(res.msg)
                         }
@@ -183,10 +184,7 @@ export default {
         } 
     },
     cancel () {
-        // this.api = '';
-        // this.data = '';
         this.$refs[this.ref].resetFields()
-        this.$Modal.remove()
     }
   },
   watch: {
