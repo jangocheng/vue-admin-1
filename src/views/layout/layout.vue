@@ -229,7 +229,7 @@
                         <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0px', cursor: 'pointer'}" type="md-menu" size="24"></Icon>
                     </div>
                     <div class="right">
-                        
+
                         <Dropdown style="margin-right: 15px;">
                             <a href="javascript:void(0)" style="font-size: 14px;color: #515a6e;">
                                 访问前台
@@ -341,7 +341,7 @@
             // 首次加载读取之前打开的标签
             this.$store.dispatch('setVisitedViews')
             let menu_data = util.getMenulistFromLocalstorage()
-            
+
             // 获取API接口返回的左侧导航列表
             var routes = [
                 {
@@ -396,7 +396,7 @@
                                                         }
                                                     )
                                                     break;
-                                            
+
                                                 default:
                                                     children.push(
                                                         {

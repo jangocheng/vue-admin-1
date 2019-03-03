@@ -6,7 +6,7 @@ set -e
 # 构建
 npm run build
 
-# cd 到构建输出的目录下 
+# cd 到构建输出的目录下
 cd dist
 
 # 部署到自定义域域名
@@ -17,6 +17,6 @@ git add -A
 git commit -m 'deploy'
 
 # 部署到 https://<USERNAME>.github.io/<REPO>
-git push -f git@git.dev.tencent.com:jry/vue-admin.git master:coding-pages
+git push -f git@github.com:initadmin/vue-admin.git master:gh-pages
 
 cd -

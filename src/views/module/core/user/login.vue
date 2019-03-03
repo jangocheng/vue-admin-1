@@ -77,7 +77,7 @@ export default {
                 })
                 .then(function (res) {
                     res = res.data
-                    console.log(res)
+                    //console.log(res)
                     if (res.code == '200') {
                         _this.$store.commit('set_token', res.data.token)
                         if (util.getToken()) {
