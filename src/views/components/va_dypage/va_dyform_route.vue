@@ -42,7 +42,7 @@ export default {
     },
     watch: {
         $route(){
-            this.loadData()
+            //this.loadData()
         },
     }
 }
