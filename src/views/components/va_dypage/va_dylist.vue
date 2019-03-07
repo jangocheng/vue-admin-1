@@ -120,7 +120,7 @@ export default {
     },
     watch: {
         api(val) {
-            //this.loadData()
+            this.loadData()
         }
     },
     created() {
