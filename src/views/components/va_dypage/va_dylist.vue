@@ -22,7 +22,7 @@
                 <Modal scrollable draggable :ref="'top_modal_' + key" :key="'top_modal_' + key" v-model="item.page_data.show":width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
                     <VaDyform :ref="'top_form_' + key" :api="item.page_data.api_blank" :foot_hide="true"></VaDyform>
                     <div slot="footer" style="text-align: left;">
-                        <Button :loading="loading" type="primary" size="large" style="margin-right: 15px" @click="btnSubmit('top', key)">确认提交</Button>
+                        <Button :loading="item.page_data.loading" type="primary" size="large" style="margin-right: 15px" @click="btnSubmit('top', key)">确认提交</Button>
                         <Button type="text" size="large" @click="btnCancel('top', key)">取消操作</Button>
                     </div>
                 </Modal>
@@ -68,7 +68,7 @@
                     <Modal scrollable draggable :key="'modal' + key" v-model="item.page_data.show" :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
                         <VaDyform :ref="'right_form_' + key" :api="item.page_data.api_blank" :foot_hide="true"></VaDyform>
                         <div slot="footer" style="text-align: left;">
-                            <Button :loading="loading" type="primary" size="large" style="margin-right: 15px" @click="btnSubmit('right', key)">确认提交</Button>
+                            <Button :loading="item.page_data.loading" type="primary" size="large" style="margin-right: 15px" @click="btnSubmit('right', key)">确认提交</Button>
                             <Button type="text" size="large" @click="btnCancel('right', key)">取消操作</Button>
                         </div>
                     </Modal>
@@ -77,7 +77,7 @@
                     <Modal scrollable draggable :key="'modal' + key" v-model="item.page_data.show" :width="item.page_data.width?item.page_data.width:600" :title="item.page_data.title">
                         <DynamicList :ref="'right_form_' + key" :api="item.page_data.api_blank" :foot_hide="true"></DynamicList>
                         <div slot="footer" style="text-align: left;">
-                            <Button :loading="loading" type="primary" size="large" style="margin-right: 15px" @click="btnSubmit('right', key)">确认提交</Button>
+                            <Button :loading="item.page_data.loading" type="primary" size="large" style="margin-right: 15px" @click="btnSubmit('right', key)">确认提交</Button>
                             <Button type="text" size="large" @click="btnCancel('right', key)">取消操作</Button>
                         </div>
                     </Modal>
@@ -140,11 +140,15 @@ export default {
     },
     methods: {
         btnSubmit(cate, key) {
+            this.list_data[cate + '_button_list'][key].page_data.loading = true
             this.$refs[cate + '_form_' + key][0].submit()
+            this.list_data[cate + '_button_list'][key].page_data.loading = false
         },
         btnCancel(cate, key) {
+            this.list_data[cate + '_button_list'][key].page_data.loading = true
             this.$refs[cate + '_form_' + key][0].cancel()
             this.list_data[cate + '_button_list'][key].page_data.show = false
+            this.list_data[cate + '_button_list'][key].page_data.loading = false
         },
         loadData (api = ''){
             if (api != '') {
@@ -171,7 +175,6 @@ export default {
         top_button_modal(key) {
             this.list_data.top_button_list[key].page_data.api_blank = this.list_data.top_button_list[key].page_data.api
             this.list_data.top_button_list[key].page_data.show = true
-            this.$refs['top_form_' + key][0].loadData(this.list_data.top_button_list[key].page_data.api_blank)
         },
         right_button_modal(key, scope) {
             let _this = this
@@ -219,14 +222,11 @@ export default {
                         _this.list_data.right_button_list[key].page_data.api_blank
                             = _this.list_data.right_button_list[key].page_data.api + api_suffix
                         _this.list_data.right_button_list[key].page_data.show = true
-                        console.log(_this.$refs['right_form_' + key])
-                        _this.$refs['right_form_' + key][0].loadData(_this.list_data.right_button_list[key].page_data.api_blank)
                         break;
                     default:
                         _this.list_data.right_button_list[key].page_data.api_blank 
                             = _this.list_data.right_button_list[key].page_data.api + api_suffix
                         _this.list_data.right_button_list[key].page_data.show = true
-                        _this.$refs['right_form_' + key][0].loadData(_this.list_data.right_button_list[key].page_data.api_blank)
                         break;
                 }
             }

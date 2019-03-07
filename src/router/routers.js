@@ -56,7 +56,6 @@ if (typeof menu_data === 'object') {
                     }
                 )
                 break;
-        
             default:
                 children.push(
                     {

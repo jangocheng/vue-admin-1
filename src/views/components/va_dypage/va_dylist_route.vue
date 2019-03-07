@@ -27,7 +27,7 @@ export default {
                 let _this = this
                 let length = this.$route.params.length
                 if (length > 0) {
-                    this.$route.params.forEach(function(e){  
+                    this.$route.params.forEach(function(e){
                         _this.$route.meta.api = _this.$route.meta.api + '/' + _this.$route.params[e]
                     });
                     _this.api = _this.$route.meta.api
@@ -44,6 +44,6 @@ export default {
     }
 }
 </script>
-    
+
 <style>
 </style>

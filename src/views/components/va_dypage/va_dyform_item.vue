@@ -113,13 +113,12 @@
             <!-- https://github.com/lison16/tree-table-vue -->
             <tree-table
                 :ref="'checkboxtree_' + item.name"
-                :expand-key="item.extra.expand-key"
+                :expand-key="item.extra.expand_key"
                 :is-fold="true"
                 :border="true"
                 :stripe="false"
                 :selectable="true"
                 :expand-type="false"
-                :selection-type="checkbox"
                 :columns="item.extra.columns"
                 :data="item.extra.data">
             </tree-table>
@@ -171,6 +170,6 @@ export default {
     }
 }
 </script>
-    
+
 <style>
 </style>
